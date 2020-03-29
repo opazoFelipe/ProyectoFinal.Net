@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="FutGolModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Equipos">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="pais" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Jugadores" Relationship="Self.FK_Jugadores_Equipos" FromRole="Equipos" ToRole="Jugadores" />
+  </EntityType>
+  <EntityType Name="Jugadores">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombres" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="apellidos" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="posicion" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="id_equipo" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Equipos" Relationship="Self.FK_Jugadores_Equipos" FromRole="Jugadores" ToRole="Equipos" />
+  </EntityType>
+  <Association Name="FK_Jugadores_Equipos">
+    <End Role="Equipos" Type="Self.Equipos" Multiplicity="1" />
+    <End Role="Jugadores" Type="Self.Jugadores" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Equipos">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Jugadores">
+        <PropertyRef Name="id_equipo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="FutGolEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Equipos" EntityType="Self.Equipos" />
+    <EntitySet Name="Jugadores" EntityType="Self.Jugadores" />
+    <AssociationSet Name="FK_Jugadores_Equipos" Association="Self.FK_Jugadores_Equipos">
+      <End Role="Equipos" EntitySet="Equipos" />
+      <End Role="Jugadores" EntitySet="Jugadores" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
